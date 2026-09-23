@@ -9,7 +9,8 @@
   },
   "scripts": {
     "estado": "node scripts/estado.mjs",
-    "verificar:entorno": "node scripts/verificar-entorno.mjs"
+    "verificar:entorno": "node scripts/verificar-entorno.mjs",
+    "control:poseidon": "node scripts/control-poseidon.mjs"
   },
   "dependencies": {
     "circomlib": "2.0.5",

@@ -45,6 +45,8 @@ Se van completando tarea por tarea. Los que ya existen:
 - Estado del plan: `npm run estado`
 - Versiones de todas las herramientas: `npm run verificar:entorno` (ver
   `docs/00-entorno.md`)
+- Paridad del hash entre JS y circuito: `npm run control:poseidon` (ver
+  `docs/01-poseidon.md`)
 
 ## Reglas específicas
 
