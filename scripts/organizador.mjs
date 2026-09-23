@@ -14,7 +14,7 @@ import { dirname, join, relative } from "node:path";
 
 import { P, exigirEnCampo, secretoDeterminista, elementoDeScope } from "../lib/campo.mjs";
 import { construirHashes, armarArbol, caminoDe, raizDesdeCamino } from "../lib/merkle.mjs";
-import { fuenteJson } from "../fuentes/json.mjs";
+import { fuenteDeRaiz } from "../fuentes/seleccion.mjs";
 
 const raizRepo = join(dirname(fileURLToPath(import.meta.url)), "..");
 const datos = join(raizRepo, "datos");
@@ -86,10 +86,10 @@ async function main() {
   const opciones = leerArgumentos(process.argv.slice(2));
   const fallas = [];
 
-  console.log("\nOrganizador v0 - parte base (fuente JSON)\n");
+  console.log("\nOrganizador v0 - parte base\n");
   exigirEnCampo(opciones.scope, "scope del evento");
 
-  const fuente = fuenteJson({ ruta: join(datos, "raiz.json"), etiqueta: "datos/raiz.json" });
+  const fuente = await fuenteDeRaiz();
   console.log(`  fuente de raiz    ${fuente.nombre}`);
   console.log(
     `  scope del evento  ${opciones.scope}${opciones.etiquetaScope ? `  (etiqueta ${opciones.etiquetaScope})` : ""}`

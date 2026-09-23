@@ -11,7 +11,7 @@
 //
 // Parte de cero en cada corrida: las dos puertas de la demo son suyas
 // (puertas/puerta-demo-a1 y -a2), las borra al arrancar y las provisiona de
-// nuevo. Por eso `npm test` da lo mismo corrido dos veces seguidas, que es
+// nuevo, y desde T09 tambien reinicia la cadena local y la baja al terminar. Por eso `npm test` da lo mismo corrido dos veces seguidas, que es
 // justamente lo que fallaba cuando la demo usaba las puertas 1 y 2 a mano: la
 // lista de nulificadores sobrevive entre corridas y el caso 1 pasaba el primer
 // dia y fallaba el segundo por doble ingreso.
@@ -30,6 +30,7 @@ import { escribirSobreJson, escribirSobreBinario } from "../lib/sobre.mjs";
 import { cerrarCurva, BYTES_ELEMENTO, BYTES_PRUEBA_COMPRIMIDA } from "../lib/prueba-binaria.mjs";
 import { indiceDe } from "../lib/senales.mjs";
 import { RAIZ_REPO, directorioPuerta, leerUsados } from "../lib/puerta.mjs";
+import { RPC, bajarCadena, reiniciarCadena } from "../lib/cadena.mjs";
 
 const datos = join(RAIZ_REPO, "datos");
 const build = join(RAIZ_REPO, "build");
@@ -149,6 +150,13 @@ async function prepararTodo() {
   rmSync(demo, { recursive: true, force: true });
   mkdirSync(demo, { recursive: true });
   console.log(`  estado borrado                      puertas/puerta-{${PUERTA_A1},${PUERTA_A2}}/ y ${rel(demo)}/`);
+
+  // La cadena tambien parte de cero: un nodo de Hardhat guarda su mundo en
+  // memoria, asi que reiniciarlo borra el contrato y todas las raices. Sin esto,
+  // la suite correria contra las raices que publico la corrida de ayer y no
+  // probaria que el organizador de hoy las publico.
+  const cadena = await reiniciarCadena({ silencioso: true });
+  console.log(`  cadena reiniciada                   ${RPC} (pid ${cadena.pid}, chainId ${cadena.chainId})`);
 
   // El evento B primero: el organizador publica una raiz por vez en
   // datos/raiz.json, asi que se genera la prueba de B y despues se vuelve a
@@ -458,11 +466,16 @@ async function main() {
   console.log("\nVer docs/07-demostraciones.md.\n");
 
   await cerrarCurva();
+  // La cadena la levanto esta suite, asi que la baja esta suite: `npm test` tiene
+  // que dejar la maquina como la encontro para que la segunda corrida seguida de
+  // la misma cuente lo mismo que la primera.
+  await bajarCadena({ silencioso: true });
   process.exit(bien === resultados.length ? 0 : 1);
 }
 
 main().catch(async (e) => {
   await cerrarCurva().catch(() => {});
+  await bajarCadena({ silencioso: true }).catch(() => {});
   console.error(`\n${e.name === "RangeError" || e.name === "TypeError" ? "VALOR INVALIDO" : "Error inesperado"}:`);
   console.error(e.message || e);
   if (e.name !== "RangeError" && e.name !== "TypeError") console.error(e);

@@ -14,3 +14,8 @@ salidas/
 # El estado local de cada molinete (configuracion descargada y lista de
 # nulificadores): se regenera con npm run puerta:provisionar.
 puertas/
+
+# El estado de la cadena local (pid del nodo, direccion del contrato desplegado,
+# gas de cada publicacion). Vive lo que vive el proceso del nodo: se regenera con
+# npm run cadena:arriba. Ver docs/08-contrato-raiz.md.
+cadena/

@@ -10,12 +10,14 @@ programa instalado, no la que pide `package.json`— y termina con error si falt
 alguna o si circom y circomlib no son de la misma serie.
 
 Estas son las versiones que quedaron instaladas en la máquina de Patricio el
-2026-09-23, copiadas de la salida del comando:
+2026-09-23, copiadas de la salida del comando. Node y Hardhat cambiaron en T09:
+Patricio actualizó Node y eso habilitó el salto a Hardhat 3, que es lo que esta
+tabla ya refleja.
 
 | Herramienta | Versión | De dónde sale |
 |---|---|---|
-| node | v20.19.2 | `node --version` |
-| npm | 10.8.2 | `npm --version` |
+| node | v24.21.0 | `node --version` |
+| npm | 11.19.0 | `npm --version` |
 | git | 2.51.0.windows.1 | `git --version` |
 | rustc | 1.96.0 (ac68faa20 2026-05-25) | `rustc --version` |
 | cargo | 1.96.0 (30a34c682 2026-05-25) | `cargo --version` |
@@ -24,8 +26,9 @@ Estas son las versiones que quedaron instaladas en la máquina de Patricio el
 | circomlib | 2.0.5 | `node_modules/circomlib/package.json` |
 | circomlibjs | 0.1.7 | `node_modules/circomlibjs/package.json` |
 | ethers | 6.17.0 | `node_modules/ethers/package.json` |
-| hardhat | 2.29.1 | `node_modules/hardhat/package.json` |
+| hardhat | 3.17.0 | `node_modules/hardhat/package.json` |
 | @openzeppelin/contracts | 5.6.1 | `node_modules/@openzeppelin/contracts/package.json` |
+| solc | 0.8.28 | lo fija `hardhat.config.js` y lo descarga Hardhat (T09) |
 
 Sistema operativo: Windows 11 Pro 10.0.26200.
 
@@ -117,20 +120,26 @@ números dejan de ser comparables sin que nadie se entere. El costo es que las
 actualizaciones hay que hacerlas a mano, que para un ejercicio de unas semanas es
 el costo correcto.
 
-**Por qué Hardhat 2 y no Hardhat 3.** Hardhat 3.17.0 es la versión actual, pero
-requiere Node 22.13.0 o posterior y la máquina tiene Node 20.19.2. Verificado
-corriéndolo, no leyéndolo: instalado en una carpeta aparte, `npx hardhat --version`
-responde `ERROR: You are using Node.js 20.19.2 which is not supported by Hardhat.
-Please upgrade to Node.js 22.13.0 or later.` Con Hardhat 2.29.1 —la última de la
-serie 2— el mismo comando responde `2.29.1`. Se eligió no tocar la instalación de
-Node de la máquina de Patricio en una tarea de andamiaje: esa es una decisión suya.
-Queda anotada en la bitácora de T01 como pendiente.
+**Por qué Hardhat 3, y por qué antes era Hardhat 2.** T01 clavó Hardhat 2.29.1 por
+una sola razón: Hardhat 3 exige Node 22.13.0 o posterior y la máquina tenía Node
+20.19.2. Estaba verificado corriéndolo, no leyéndolo: `npx hardhat --version`
+respondía `ERROR: You are using Node.js 20.19.2 which is not supported by Hardhat.
+Please upgrade to Node.js 22.13.0 or later.` En T09 ese motivo dejó de existir:
+Patricio actualizó a Node v24.21.0, y con eso `npx hardhat --version` responde
+`3.17.0`. No hay ninguna otra razón para quedarse en la serie 2, así que el proyecto
+pasó a **Hardhat 3.17.0**, clavado sin `^` como todo lo demás. Qué cambió en la
+configuración al pasar está en `docs/08-contrato-raiz.md`, sección 3.
 
-**Por qué `package.json` no declara `"type": "module"`.** `CONTEXTO.md` pide ESM
-con extensión `.mjs`. Usar `.mjs` explícito en cada archivo consigue lo mismo sin
-volver ESM a todo el directorio, lo cual importa porque Hardhat 2 espera un
-`hardhat.config.js` en CommonJS: con `"type": "module"` habría que renombrarlo a
-`.cjs` y explicar por qué. Menos piezas raras que justificar en T09.
+**Por qué `package.json` declara `"type": "module"`.** `CONTEXTO.md` pide ESM con
+extensión `.mjs`, y hasta T09 eso alcanzaba: cada archivo lo decía por su extensión
+y no hacía falta declarar nada en `package.json`. Hardhat 3 lo cambió, porque busca
+su configuración **solo** como `hardhat.config.ts` o `hardhat.config.js` —con el
+archivo llamado `hardhat.config.mjs` contesta `Error HHE3: No Hardhat config file
+found`—. TypeScript está descartado por `CONTEXTO.md`, así que queda `.js`, y para
+que un `.js` pueda usar `import` el paquete tiene que ser ESM. El cambio no rompe
+nada: en el repositorio no hay ningún otro archivo `.js`, todo el código es `.mjs`
+explícito. T01 había decidido lo contrario con el argumento de que Hardhat 2 esperaba
+un config en CommonJS; el argumento era correcto entonces y se dio vuelta solo.
 
 **Por qué la versión de los paquetes se lee de `node_modules` y no de
 `package.json`.** `package.json` dice lo que *pedimos*; `node_modules` tiene lo que
@@ -162,11 +171,11 @@ y la que más implementaciones cruzadas tiene (Solidity, JS, Rust), que es lo qu
 permite el paso de control de T02. Cambiarla toca el circuito, el organizador y el
 validador, y obliga a repetir T02 desde cero.
 
-**Node 20 → Node 22 LTS.** Desbloquea Hardhat 3. Cambia `package.json` (campo
-`engines` y la versión de `hardhat`) y probablemente el `hardhat.config` de T09.
-Se gana el stack actual de Hardhat; se pierde la garantía de que las mediciones de
-antes y después del cambio sean comparables, así que conviene hacerlo antes de
-MED-001 o no hacerlo.
+**Node 24 → Node 22 LTS.** La máquina corre Node v24.21.0, que no es una versión
+LTS. Bajar a la 22 LTS gana estabilidad y sigue alcanzando para Hardhat 3, que pide
+22.13.0 o posterior. Cambia el campo `engines` de `package.json` y obliga a rehacer
+cualquier medición ya tomada, porque el tiempo de generación de prueba depende del
+runtime. Conviene decidirlo **antes** de MED-001, no después.
 
 **Hardhat → Foundry.** Foundry es más rápido y los tests se escriben en Solidity.
 Se pierde el ecosistema JS que acá conviene, porque el prover y el organizador ya
@@ -186,8 +195,8 @@ La salida real del último comando, tal como quedó:
 
 ```
 Herramientas del sistema
-  node                    v20.19.2
-  npm                     10.8.2
+  node                    v24.21.0
+  npm                     11.19.0
   git                     git version 2.51.0.windows.1
   rustc                   rustc 1.96.0 (ac68faa20 2026-05-25)
   cargo                   cargo 1.96.0 (30a34c682 2026-05-25)
@@ -198,7 +207,7 @@ Paquetes de Node (version instalada en node_modules)
   circomlib               2.0.5
   circomlibjs             0.1.7
   ethers                  6.17.0
-  hardhat                 2.29.1
+  hardhat                 3.17.0
   @openzeppelin/contracts 5.6.1
 
 Coherencia circom <-> circomlib
@@ -259,10 +268,11 @@ recién en T03 como un error de sintaxis adentro de un archivo de circomlib.
 ## 6. Qué NO hace
 
 No instala Node, ni Rust, ni git: asume que están. No fija la versión de Node más
-allá de declarar `engines: node >= 20.19.0`, que npm solo usa como advertencia. No
-verifica que `solc` esté disponible —Hardhat lo descarga solo la primera vez que
-compila un contrato, en T09— así que `npm run verificar:entorno` puede pasar en
-una máquina sin conexión donde T09 igual falle.
+allá de declarar `engines: node >= 22.13.0` —el mínimo que pide Hardhat 3—, que npm
+solo usa como advertencia. No verifica que `solc` esté disponible: Hardhat lo
+descarga solo la primera vez que compila un contrato, que en esta máquina fue
+durante T09 (`Downloading solc 0.8.28`), así que `npm run verificar:entorno` puede
+pasar en una máquina sin conexión donde `npm run contrato:compilar` igual falle.
 
 No comprueba que el Poseidon de circomlibjs y el de circomlib den el mismo
 resultado: solo comprueba que los dos paquetes están instalados y que el pragma es

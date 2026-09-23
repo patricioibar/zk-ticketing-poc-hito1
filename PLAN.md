@@ -252,7 +252,7 @@ Este archivo, `CONTEXTO.md`, `estado.json`, `RETOMAR.md`, `AGENTS.md`,
 
 ### T11 · `EntradaNFT.sol`
 
-- **Depende de**: T09. **Leer**: `CONTEXTO.md`, `docs/07-contrato-raiz.md`.
+- **Depende de**: T09. **Leer**: `CONTEXTO.md`, `docs/08-contrato-raiz.md`.
 - **Hacer**: ERC-721 con la implementación de referencia de OpenZeppelin (no
   escribirlo de cero), más `enviarCompromiso(tokenId, compromiso)` con
   `require(ownerOf(tokenId) == msg.sender)`, almacenamiento de compromisos y

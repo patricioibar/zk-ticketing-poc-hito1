@@ -18,7 +18,7 @@ import * as snarkjs from "snarkjs";
 
 import { exigirEnCampo, elementoDeScope } from "../lib/campo.mjs";
 import { construirHashes, armarArbol, caminoDe, raizDesdeCamino } from "../lib/merkle.mjs";
-import { fuenteJson } from "../fuentes/json.mjs";
+import { fuenteDeRaiz } from "../fuentes/seleccion.mjs";
 import {
   serializarPrueba,
   deserializarPrueba,
@@ -141,7 +141,7 @@ async function main() {
   const etiquetaScope = opciones.scope ?? padron.scope;
   const scope = exigirEnCampo(elementoDeScope(etiquetaScope), "scope del evento");
 
-  const fuente = fuenteJson({ ruta: join(datos, "raiz.json"), etiqueta: "datos/raiz.json" });
+  const fuente = await fuenteDeRaiz({ silencioso: true });
 
   console.log(`  padron publico    ${rel(join(datos, "arbol.json"))} (${compromisos.length} compromisos, profundidad ${PROFUNDIDAD})`);
   console.log(`  fuente de raiz    ${fuente.nombre}`);

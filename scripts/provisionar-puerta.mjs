@@ -15,7 +15,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join, relative } from "node:path";
 
 import { exigirEnCampo, elementoDeScope } from "../lib/campo.mjs";
-import { fuenteJson } from "../fuentes/json.mjs";
+import { fuenteDeRaiz } from "../fuentes/seleccion.mjs";
 import { exigirOrdenCanonico, ORDEN_SENALES } from "../lib/senales.mjs";
 import {
   RAIZ_REPO,
@@ -86,7 +86,7 @@ async function main() {
   const etiquetaScope = opciones.scope ?? padron.scope;
   const scope = exigirEnCampo(elementoDeScope(etiquetaScope), "scope del evento");
 
-  const fuente = fuenteJson({ ruta: join(datos, "raiz.json"), etiqueta: "datos/raiz.json" });
+  const fuente = await fuenteDeRaiz({ silencioso: true });
   const raiz = await fuente.leerRaiz(scope);
   if (raiz === null) {
     console.error(`\nLa fuente no tiene ninguna raiz publicada para el scope ${scope}.`);

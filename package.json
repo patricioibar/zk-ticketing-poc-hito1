@@ -4,8 +4,9 @@
   "private": true,
   "description": "PoC mini Hito 1 — Variacion 2: pertenencia anonima con nulificador sobre entradas NFT",
   "license": "UNLICENSED",
+  "type": "module",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "estado": "node scripts/estado.mjs",
@@ -13,6 +14,11 @@
     "control:poseidon": "node scripts/control-poseidon.mjs",
     "circuito:pertenencia": "node scripts/circuito-pertenencia.mjs",
     "setup": "node scripts/setup-groth16.mjs",
+    "contrato:compilar": "hardhat compile",
+    "contrato:medir": "node scripts/contrato.mjs",
+    "cadena:arriba": "node scripts/cadena.mjs --arriba",
+    "cadena:abajo": "node scripts/cadena.mjs --abajo",
+    "cadena:estado": "node scripts/cadena.mjs --estado",
     "organizador": "node scripts/organizador.mjs",
     "probar": "node scripts/prover.mjs",
     "puerta:provisionar": "node scripts/provisionar-puerta.mjs",
@@ -29,6 +35,6 @@
   },
   "devDependencies": {
     "@openzeppelin/contracts": "5.6.1",
-    "hardhat": "2.29.1"
+    "hardhat": "3.17.0"
   }
 }
