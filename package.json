@@ -14,7 +14,10 @@
     "circuito:pertenencia": "node scripts/circuito-pertenencia.mjs",
     "setup": "node scripts/setup-groth16.mjs",
     "organizador": "node scripts/organizador.mjs",
-    "probar": "node scripts/prover.mjs"
+    "probar": "node scripts/prover.mjs",
+    "puerta:provisionar": "node scripts/provisionar-puerta.mjs",
+    "validar": "node scripts/validador.mjs",
+    "ataque:raiz-propia": "node scripts/ataque-raiz-propia.mjs"
   },
   "dependencies": {
     "@zk-kit/binary-merkle-root.circom": "2.0.0",

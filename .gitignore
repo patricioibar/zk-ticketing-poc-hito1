@@ -10,3 +10,7 @@ cache/
 salidas/
 .env
 *.local.md
+
+# El estado local de cada molinete (configuracion descargada y lista de
+# nulificadores): se regenera con npm run puerta:provisionar.
+puertas/
