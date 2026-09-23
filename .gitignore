@@ -1,0 +1,12 @@
+node_modules/
+build/
+artifacts/
+cache/
+*.ptau
+*.zkey
+*.wtns
+*.r1cs
+*.wasm
+salidas/
+.env
+*.local.md

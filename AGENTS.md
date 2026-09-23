@@ -1,0 +1,70 @@
+# PoC mini Hito 1 — TPF Ticketing NFT con privacidad ZK
+
+Instrucciones para cualquier agente de IA que trabaje en este repositorio de
+código, que es la prueba de concepto del Hito 1 del Trabajo Profesional
+(FIUBA, Equipo 211).
+
+**Antes que nada**: leé [CONTEXTO.md](CONTEXTO.md) y la sección de tu tarea en
+[PLAN.md](PLAN.md). No leas el plan entero. Si no te asignaron una tarea, corré
+`npm run estado` y preguntá.
+
+## Dónde están las decisiones
+
+Este repositorio tiene solo código. Las decisiones (ADR), la base de conocimiento,
+las mediciones y el plan del TPF están en el repositorio de documentación:
+`../zk-ticketing-docs` (en GitHub: [completar: URL]).
+
+- Antes de implementar algo que dependa de una decisión, leé el ADR
+  correspondiente. Si esa carpeta está disponible en tu sesión, leelo de ahí; si
+  no, pedile a Patricio que la adjunte. No asumas su contenido.
+- **El código actual con decisiones viejas es el error más caro.** Antes de tocar
+  algo que implemente un ADR, comprobá su estado, no solo su contenido:
+  `python3 scripts/proyecto.py decisiones` en el repo de docs imprime ID, estado,
+  título, ruta y commit. Un ADR `reemplazada` o `rechazada` que el código sigue
+  implementando es un hallazgo: decilo, no lo arregles por tu cuenta.
+- Cuando el código implemente una decisión, citá el ADR por su ID (`ADR-NNN`) en
+  el commit o en un comentario. Usá el ID, nunca una copia del texto: la copia
+  envejece sin avisar.
+- No tomes ni registres decisiones de diseño acá. Si surge una, anotala en tu
+  bitácora como candidata a ADR y proponé abrirla en el repo de docs.
+- Las reglas generales (rigor de fuentes, uso de IA, idioma) son las del
+  `AGENTS.md` del repo de docs, resumidas en `CONTEXTO.md`.
+
+## Qué es
+
+Prueba de concepto mínima de pertenencia anónima a un conjunto con nulificador,
+con las entradas emitidas como NFT (ERC-721) y una capa de compromisos que separa
+la titularidad pública del secreto privado. Corresponde a la Variación 2 del
+documento de Hito 1 de Agustina Fontana. Aporta evidencia a ADR-008, ADR-009,
+ADR-010, ADR-011 y a la medición MED-001. **No cierra ninguna decisión.**
+
+## Comandos
+
+Se completan en T01. Los estables:
+
+- Estado del plan: `npm run estado` (antes de T01: `node scripts/estado.mjs`)
+
+## Reglas específicas
+
+- **Tests negativos explícitos.** Un circuito que acepta lo que debe aceptar no
+  está probado: hay que demostrar que rechaza testigos inválidos. Ver
+  `kb/objeciones-jurado.md` en el repo de docs.
+- **Primitivas auditadas.** Poseidon de circomlib, ERC-721 de OpenZeppelin, camino
+  de Merkle de un template existente. No se escribe criptografía a mano; si hubo
+  que hacerlo, se justifica en la bitácora.
+- **Los números se miden.** Tiempo de proving, tamaño de prueba y gas se reportan
+  con la salida real del comando, con el hardware anotado. Nada estimado.
+- **El trusted setup local no es seguro** y todo doc que lo mencione tiene que
+  decirlo.
+
+## Documentación
+
+Es el entregable principal, no un extra. Cada tarea que produce código produce su
+`docs/<componente>.md` con las seis secciones de la plantilla de `CONTEXTO.md`, y
+su `bitacora/TNN-<slug>.md`. Una tarea sin doc no está hecha.
+
+## Git
+
+Nunca se trabaja directo sobre `main`: rama y commit. Los commits asistidos llevan
+el trailer `Asistido-por: <herramienta>`. El agente no hace push ni maneja
+credenciales: eso lo hace Patricio.
