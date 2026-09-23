@@ -10,9 +10,11 @@
   "scripts": {
     "estado": "node scripts/estado.mjs",
     "verificar:entorno": "node scripts/verificar-entorno.mjs",
-    "control:poseidon": "node scripts/control-poseidon.mjs"
+    "control:poseidon": "node scripts/control-poseidon.mjs",
+    "circuito:pertenencia": "node scripts/circuito-pertenencia.mjs"
   },
   "dependencies": {
+    "@zk-kit/binary-merkle-root.circom": "2.0.0",
     "circomlib": "2.0.5",
     "circomlibjs": "0.1.7",
     "ethers": "6.17.0",

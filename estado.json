@@ -7,7 +7,7 @@
     { "id": "T00", "titulo": "Estructura, plan y estado",              "fase": 0, "depende": [],              "estado": "hecha",     "bitacora": "bitacora/T00-andamiaje.md" },
     { "id": "T01", "titulo": "Entorno verificado",                      "fase": 0, "depende": ["T00"],         "estado": "hecha",     "bitacora": "bitacora/T01-entorno.md" },
     { "id": "T02", "titulo": "Paso de control Poseidon JS vs circuito", "fase": 1, "depende": ["T01"],         "estado": "hecha",     "bitacora": "bitacora/T02-poseidon.md" },
-    { "id": "T03", "titulo": "Circuito de pertenencia",                 "fase": 1, "depende": ["T02"],         "estado": "pendiente", "bitacora": null },
+    { "id": "T03", "titulo": "Circuito de pertenencia",                 "fase": 1, "depende": ["T02"],         "estado": "hecha",     "bitacora": "bitacora/T03-circuito.md" },
     { "id": "T04", "titulo": "Trusted setup Groth16",                   "fase": 1, "depende": ["T03"],         "estado": "pendiente", "bitacora": null },
     { "id": "T05", "titulo": "Organizador v0 (fuente JSON)",            "fase": 1, "depende": ["T04"],         "estado": "pendiente", "bitacora": null },
     { "id": "T06", "titulo": "Asistente / prover",                      "fase": 1, "depende": ["T05"],         "estado": "pendiente", "bitacora": null },

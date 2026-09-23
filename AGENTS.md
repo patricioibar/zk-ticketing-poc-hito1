@@ -47,6 +47,8 @@ Se van completando tarea por tarea. Los que ya existen:
   `docs/00-entorno.md`)
 - Paridad del hash entre JS y circuito: `npm run control:poseidon` (ver
   `docs/01-poseidon.md`)
+- Compilar y probar el circuito de pertenencia: `npm run circuito:pertenencia`
+  (ver `docs/02-circuito.md`)
 
 ## Reglas específicas
 

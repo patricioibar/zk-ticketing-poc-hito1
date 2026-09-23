@@ -4,9 +4,16 @@
 
 Comprueba que la función de hash Poseidon devuelve exactamente el mismo número
 cuando se la calcula adentro de un circuito de circom y cuando se la calcula en
-JavaScript con circomlibjs. `npm run control:poseidon` compila un circuito mínimo,
-corre nueve valores de prueba por las dos implementaciones —entre ellos los bordes
-del campo sobre el que trabajan— y termina con error si alguno difiere.
+JavaScript con circomlibjs. `npm run control:poseidon` compila dos circuitos
+mínimos, corre nueve valores de prueba de una entrada y siete pares de dos por las
+dos implementaciones —entre ellos los bordes del campo sobre el que trabajan— y
+termina con error si alguno difiere.
+
+La parte de dos entradas la agregó T03, que es la que la necesita: el nodo interno
+del árbol y el nulificador usan `Poseidon(2)`, y cada aridad carga constantes
+distintas. El control cierra además comprobando que `Poseidon(1)([x])` y
+`Poseidon(2)([x, 0])` son números distintos, que es la separación de dominio en la
+que se apoya `docs/02-circuito.md`.
 
 No produce ninguna pieza del sistema. Es un instrumento de calibración: se corre
 antes de construir nada encima, y se vuelve a correr cada vez que cambie alguna
@@ -14,7 +21,9 @@ versión.
 
 ## 2. Cómo lo hace
 
-Son dos archivos: el circuito y el script que lo maneja.
+Son tres archivos: dos circuitos —uno por aridad— y el script que los maneja. Los
+dos circuitos son iguales salvo por la cantidad de entradas, así que abajo se
+recorre el de aridad 1; `circuitos/control_poseidon2.circom` es el mismo con dos.
 
 ### El circuito
 
@@ -56,25 +65,27 @@ lineales, 417 cables. Guardá ese número; la sección 3 lo usa.
 
 `scripts/control-poseidon.mjs` se lee de arriba hacia abajo en orden de ejecución.
 
-`scripts/control-poseidon.mjs:25` escribe a mano el módulo del campo primo de
+`scripts/control-poseidon.mjs:30` escribe a mano el módulo del campo primo de
 BN254. Está clavado a propósito y no leído de ninguna librería: si circom o
 circomlibjs cambiaran de curva, un valor leído de ellas seguiría coincidiendo
 consigo mismo y el control pasaría igual. Escrito a mano, no.
 
-`scripts/control-poseidon.mjs:31` es la lista de vectores de prueba. Los tres
-primeros son valores triviales, el cuarto es un número cualquiera del medio del
-campo, y los cinco últimos son los bordes: `p - 1`, `p`, `p + 1`, `2^253` y
-`2^256 - 1`. Por qué esos, en la sección 3.
+`scripts/control-poseidon.mjs:36` es la lista de vectores de una entrada y `:50` la
+de pares para la aridad 2. En la primera, los tres primeros valores son triviales,
+el cuarto es un número cualquiera del medio del campo, y los cinco últimos son los
+bordes: `p - 1`, `p`, `p + 1`, `2^253` y `2^256 - 1`. Por qué esos, en la sección 3.
+La segunda repite el mismo criterio con pares, y agrega un par invertido —(2, 1)
+después de (1, 2)— porque en aridad 2 el orden de los argumentos también importa.
 
-`scripts/control-poseidon.mjs:43` (`compilar`) ejecuta el compilador `circom` con
+`scripts/control-poseidon.mjs:64` (`compilar`) ejecuta el compilador `circom` con
 `-l node_modules` para que encuentre circomlib, y deja el `.r1cs` y el `.wasm` en
 `build/`. Se recompila en cada corrida a propósito: un `.wasm` viejo de una versión
 anterior de circomlib es exactamente el escenario que este control tiene que
 detectar. El flag `shell: process.platform === "win32"` es el mismo truco de
 `verificar-entorno.mjs` y por la misma razón.
 
-`scripts/control-poseidon.mjs:71` (`hashDelCircuito`) es la parte no obvia y va
-línea por línea.
+`scripts/control-poseidon.mjs:92` (`hashDelCircuito`, y `:99` su gemela de dos
+entradas) es la parte no obvia y va línea por línea.
 
 - `snarkjs.wtns.calculate({ x }, wasm, wtns)` corre el `.wasm` que produjo circom.
   Ese wasm no genera ninguna prueba: solo **calcula el witness**, que es el vector
@@ -89,18 +100,18 @@ línea por línea.
   por el propio calculador de witness. Esa es la evidencia directa de la reducción
   que la sección 3 explica, leída de adentro del circuito en vez de deducida.
 
-`scripts/control-poseidon.mjs:84` construye el Poseidon de JavaScript.
+`scripts/control-poseidon.mjs:115` construye el Poseidon de JavaScript.
 `buildPoseidon()` es asíncrono porque por dentro compila e instancia un módulo
 WebAssembly: la implementación de circomlibjs 0.1.7 no es JavaScript puro, es un
 wasm generado en tiempo de carga (`node_modules/circomlibjs/src/poseidon_wasm.js`).
 
-`scripts/control-poseidon.mjs:89` a `:99` es el chequeo previo: los dos lados
+`scripts/control-poseidon.mjs:120` a `:131` es el chequeo previo: los dos lados
 tienen que estar sobre el mismo campo. El módulo del circuito sale del `.r1cs`
 —`snarkjs.r1cs.info()` lo trae en `prime`— y el de JavaScript sale de
 `poseidon.F.p`. Comparar hashes de dos campos distintos no tendría sentido, así
 que esto va antes.
 
-`scripts/control-poseidon.mjs:104` es la llamada a Poseidon en JavaScript, y tiene
+`scripts/control-poseidon.mjs:136` es la llamada a Poseidon en JavaScript, y tiene
 dos trampas de la API vieja de circomlibjs que conviene tener escritas:
 
 - La entrada va **en un array**, incluso para una sola: `poseidonJs([x])`. Pasarle
@@ -114,7 +125,7 @@ dos trampas de la API vieja de circomlibjs que conviene tener escritas:
   documentación: `poseidon_wasm.js` devuelve `bn128.tm.getBuff(pOut, 32)`, un
   buffer crudo.
 
-`scripts/control-poseidon.mjs:122` a `:129` es el final ruidoso. Si hay al menos
+`scripts/control-poseidon.mjs:195` a `:199` es el final ruidoso. Si hay al menos
 una diferencia, imprime cuál, dice por qué no hay que seguir, y sale con código 1
 para que `npm run` también falle.
 
@@ -403,9 +414,27 @@ Poseidon(1) sobre cada vector
     h (circomlibjs)   11254588113248280256028662529799552354366536761492627237202955510067774853962
     iguales           si
 
-Control pasado: 9 vectores, mismo hash en circuito y en JS.
+Poseidon(2) sobre cada par
+
+  [recortado: los siete pares, con su salida completa, están en
+   bitacora/T03-circuito.md]
+
+Separacion de dominio: Poseidon(1)([x]) contra Poseidon(2)([x, 0])
+
+  x = 0
+    Poseidon(1)       19014214495641488759237505126948346942972912379615652741039992445865937985820
+    Poseidon(2)       14744269619966411208579211824598458697587494354926760081771325075741142829156
+    distintos         si
+
+  [recortado: dos vectores más]
+
+Control pasado: 9 vectores de aridad 1 y 7 de aridad 2,
+mismo hash en circuito y en JS. Las dos aridades son funciones distintas.
 Ver docs/01-poseidon.md.
 ```
+
+La parte de aridad 1 se muestra entera porque es la que explica el resto de esta
+sección; la de aridad 2 se recortó por largo y está completa en la bitácora de T03.
 
 Mirá el vector `p (el modulo exacto)`: la línea `x mod p  0` la imprime el script
 leyendo la señal de entrada **de adentro del witness**, no calculándola aparte. Es
@@ -462,7 +491,7 @@ mensaje de error:
    no es un desborde ni un error: es cómo funciona la aritmética modular, y acá se
    ve pasar.
 
-**Segunda rotura, más sutil.** En `scripts/control-poseidon.mjs:104`, cambiá
+**Segunda rotura, más sutil.** En `scripts/control-poseidon.mjs:136`, cambiá
 `BigInt(F.toString(poseidonJs([x])))` por `BigInt(poseidonJs([x])[0])`. El script
 va a comparar el primer byte del buffer de Montgomery contra un número de 77
 dígitos y va a fallar en todos los vectores con números que no se parecen a nada.
@@ -479,13 +508,11 @@ contra una tercera implementación independiente (la de Solidity que genera
 `poseidonContract` de circomlibjs, por ejemplo) es otra tarea, y hoy no está
 hecha. Queda como `[a verificar]`.
 
-No cubre `Poseidon(2)` ni aridades mayores, que son las que el sistema va a usar de
-verdad: el compromiso `Poseidon(secreto, titular)` y el nulificador
-`Poseidon(secreto, scope)` toman dos entradas. El control usa `Poseidon(1)` porque
-es el circuito más chico que establece el punto, pero la aridad es justamente una
-de las cosas que pueden estar desalineadas entre JS y el circuito. Ampliarlo es
-agregar vectores de dos entradas a la lista y una segunda instancia en el circuito;
-si T03 o T05 tocan algo del hash, hacerlo primero.
+No cubre aridades mayores que 2. La 1 y la 2 son las que usa el sistema —la hoja
+por un lado, el nodo interno y el nulificador por el otro—, pero si alguna decisión
+posterior lleva el compromiso a tres entradas, hay que agregar el circuito y los
+vectores correspondientes: cada aridad es una función distinta y la paridad entre
+JS y circuito hay que establecerla para cada una por separado.
 
 No verifica nada sobre el hash de Solidity. La tercera implementación —la que va a
 correr en el contrato— entra en juego en T09 y T11, y va a necesitar su propio
