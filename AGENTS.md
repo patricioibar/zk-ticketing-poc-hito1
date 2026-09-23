@@ -49,6 +49,9 @@ Se van completando tarea por tarea. Los que ya existen:
   `docs/01-poseidon.md`)
 - Compilar y probar el circuito de pertenencia: `npm run circuito:pertenencia`
   (ver `docs/02-circuito.md`)
+- Ceremonia de trusted setup Groth16: `npm run setup` (ver `docs/03-setup.md`).
+  Regenera todo en `build/setup/`, que no se commitea. **No es una ceremonia
+  segura**: la corre una sola persona en una sola máquina.
 
 ## Reglas específicas
 
