@@ -18,7 +18,8 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 import * as snarkjs from "snarkjs";
-import { buildPoseidon } from "circomlibjs";
+
+import { construirHashes, armarArbol, caminoDe } from "../lib/merkle.mjs";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const build = join(raiz, "build");
@@ -44,8 +45,8 @@ const BEACON = "0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20
 const BEACON_ITERACIONES = 10;
 
 // Mismo arbol de juguete que T03, para tener una entrada valida con la que
-// generar una prueba de verdad. Duplicado a proposito: docs/02-circuito.md cita
-// por numero de linea el script de T03 y no conviene moverlo.
+// generar una prueba de verdad. Las funciones del arbol ya no estan duplicadas:
+// T05 las unifico en lib/merkle.mjs.
 const PROFUNDIDAD = 3;
 const secretos = [11n, 22n, 33n, 44n, 55n, 66n, 77n, 88n];
 const POSICION = 5;
@@ -112,30 +113,6 @@ function asegurarCircuito() {
 function potenciaMinima(info) {
   const n = info.nConstraints + info.nPubInputs + info.nOutputs;
   return Math.floor(Math.log2(n)) + 1;
-}
-
-function armarArbol(hojas, hash2) {
-  const niveles = [hojas];
-  let actual = hojas;
-  while (actual.length > 1) {
-    const siguiente = [];
-    for (let i = 0; i < actual.length; i += 2) siguiente.push(hash2(actual[i], actual[i + 1]));
-    niveles.push(siguiente);
-    actual = siguiente;
-  }
-  return { niveles, raiz: actual[0] };
-}
-
-function caminoDe(niveles, posicion) {
-  const camino = [];
-  const indices = [];
-  let pos = posicion;
-  for (let nivel = 0; nivel < niveles.length - 1; nivel++) {
-    camino.push(niveles[nivel][pos ^ 1]);
-    indices.push(BigInt(pos & 1));
-    pos = pos >> 1;
-  }
-  return { camino, indices };
 }
 
 function aEntrada(o) {
@@ -257,10 +234,7 @@ async function main() {
   // --- Control: una prueba de verdad, para que el setup sirva de algo. ---
   console.log("\nControl - una prueba generada con esta zkey\n");
 
-  const poseidon = await buildPoseidon();
-  const F = poseidon.F;
-  const hash1 = (x) => F.toObject(poseidon([x]));
-  const hash2 = (a, b) => F.toObject(poseidon([a, b]));
+  const { hash1, hash2 } = await construirHashes();
   const { niveles, raiz: raizArbol } = armarArbol(secretos.map(hash1), hash2);
   const { camino, indices } = caminoDe(niveles, POSICION);
   const entrada = aEntrada({

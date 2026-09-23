@@ -52,6 +52,10 @@ Se van completando tarea por tarea. Los que ya existen:
 - Ceremonia de trusted setup Groth16: `npm run setup` (ver `docs/03-setup.md`).
   Regenera todo en `build/setup/`, que no se commitea. **No es una ceremonia
   segura**: la corre una sola persona en una sola máquina.
+- Árbol de compromisos y publicación de la raíz: `npm run organizador` (ver
+  `docs/04-organizador.md`). Escribe `datos/`, es determinista con semilla fija, y
+  la raíz sale por la interfaz `fuenteDeRaiz`, que es la pieza que T09 y T12
+  reemplazan sin tocar el resto.
 
 ## Reglas específicas
 

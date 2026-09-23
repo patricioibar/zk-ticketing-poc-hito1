@@ -301,16 +301,20 @@ sin esto `npm run setup` fallaría con un error de archivo faltante en una tarea
 que no es la suya. El requisito de la tarea es que la ceremonia se regenere entera
 desde cero, y "desde cero" incluye compilar.
 
-### Por qué las funciones del árbol están duplicadas
+### Por qué las funciones del árbol estuvieron duplicadas, y dónde están ahora
 
-`armarArbol` y `caminoDe` son copias de las de `scripts/circuito-pertenencia.mjs`.
-Duplicar código no es gratis y en general está mal, pero acá la alternativa era
-extraerlas a un módulo común, y eso significa mover líneas en el script de T03,
-que `docs/02-circuito.md` cita por número de línea en cinco lugares. Documentación
-que apunta a la línea equivocada es peor que treinta líneas repetidas. Queda
-anotado en la bitácora: el lugar natural para unificarlo es T05, que va a
-construir el árbol de verdad y va a necesitar esas funciones como parte del
-organizador, no como utilidades de un banco de pruebas.
+`armarArbol` y `caminoDe` eran, hasta T05, copias de las de
+`scripts/circuito-pertenencia.mjs`. Duplicar código no es gratis y en general está
+mal, pero la alternativa en ese momento era extraerlas a un módulo común, y eso
+significaba mover líneas en el script de T03, que `docs/02-circuito.md` cita por
+número de línea. Documentación que apunta a la línea equivocada es peor que
+treinta líneas repetidas, así que la deuda quedó anotada con fecha de vencimiento.
+
+**T05 la saldó**: las dos funciones viven ahora en `lib/merkle.mjs`, este script
+las importa, y las citas de `docs/02-circuito.md` se corrigieron en la misma
+tarea. La comprobación de que la mudanza no cambió nada es que la raíz y el
+nulificador que imprime `npm run setup` siguen siendo los mismos que están más
+arriba en este documento.
 
 ### Por qué no se commitea nada de la ceremonia
 

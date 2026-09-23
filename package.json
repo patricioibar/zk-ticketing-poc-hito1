@@ -12,7 +12,8 @@
     "verificar:entorno": "node scripts/verificar-entorno.mjs",
     "control:poseidon": "node scripts/control-poseidon.mjs",
     "circuito:pertenencia": "node scripts/circuito-pertenencia.mjs",
-    "setup": "node scripts/setup-groth16.mjs"
+    "setup": "node scripts/setup-groth16.mjs",
+    "organizador": "node scripts/organizador.mjs"
   },
   "dependencies": {
     "@zk-kit/binary-merkle-root.circom": "2.0.0",

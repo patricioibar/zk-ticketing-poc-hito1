@@ -125,19 +125,26 @@ que el prover y el contrato tienen que usar el mismo.
 pruebas de esta tarea. Compila el circuito, imprime el número real de
 restricciones, arma un árbol de ocho identidades en JavaScript y calcula witnesses.
 
-`scripts/circuito-pertenencia.mjs:70` (`armarArbol`) y `:86` (`caminoDe`) son el
-lado JavaScript del árbol. Vale la pena ver los dos lados juntos: el árbol entero
-se arma **afuera** del circuito, porque es trabajo de servidor y meterlo adentro
-costaría restricciones sin ganar nada; el circuito solo recalcula el camino de una
-hoja, que es lo único que hay que demostrar. Que las dos implementaciones de
-Poseidon den el mismo número es lo que establece `npm run control:poseidon`.
+`lib/merkle.mjs:27` (`armarArbol`) y `:49` (`caminoDe`) son el lado JavaScript del
+árbol. Vale la pena ver los dos lados juntos: el árbol entero se arma **afuera**
+del circuito, porque es trabajo de servidor y meterlo adentro costaría
+restricciones sin ganar nada; el circuito solo recalcula el camino de una hoja,
+que es lo único que hay que demostrar. Que las dos implementaciones de Poseidon
+den el mismo número es lo que establece `npm run control:poseidon`.
 
-`scripts/circuito-pertenencia.mjs:185` usa `snarkjs.wtns.check`, que no compara
+Cuando se escribió esta tarea las dos funciones vivían en el propio script, y T04
+las copió para no mover las líneas que este documento cita. T05 las unificó en
+`lib/merkle.mjs` —una sola definición del árbol para el organizador, para este
+banco de pruebas y para el setup— y actualizó estas citas. La raíz que imprime el
+script siguió siendo la misma después de la mudanza, que es la comprobación de
+que no cambió nada.
+
+`scripts/circuito-pertenencia.mjs:153` usa `snarkjs.wtns.check`, que no compara
 contra JavaScript sino que comprueba que el witness satisface las 2513
 restricciones del `.r1cs`. Es la verificación que corresponde a lo dicho arriba:
 el `.wasm` calcula, el `.r1cs` es el que manda.
 
-`scripts/circuito-pertenencia.mjs:200` a `:224` son los cinco testigos inválidos.
+`scripts/circuito-pertenencia.mjs:167` a `:196` son los cinco testigos inválidos.
 Un circuito que acepta lo que tiene que aceptar no está probado; lo que hay que
 demostrar es que rechaza. Los cinco están en la sección 5 con su salida real.
 

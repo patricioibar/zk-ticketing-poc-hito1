@@ -10,7 +10,11 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 import * as snarkjs from "snarkjs";
-import { buildPoseidon } from "circomlibjs";
+
+// El arbol vive en lib/merkle.mjs desde T05: es la misma definicion que usa el
+// organizador, y una sola definicion es lo unico que garantiza que los dos
+// calculen la misma raiz.
+import { construirHashes, armarArbol, caminoDe } from "../lib/merkle.mjs";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const build = join(raiz, "build");
@@ -61,39 +65,6 @@ function compilar() {
     console.error("Corre 'npm run verificar:entorno' primero.\n");
     process.exit(1);
   }
-}
-
-// El arbol se arma en JavaScript, fuera del circuito: es trabajo de servidor y
-// meterlo adentro no tendria sentido. El circuito solo recalcula el camino de
-// una hoja. Que las dos implementaciones de Poseidon coincidan es lo que
-// establece 'npm run control:poseidon'.
-function armarArbol(hojas, hash2) {
-  const niveles = [hojas];
-  let actual = hojas;
-  while (actual.length > 1) {
-    const siguiente = [];
-    for (let i = 0; i < actual.length; i += 2) {
-      siguiente.push(hash2(actual[i], actual[i + 1]));
-    }
-    niveles.push(siguiente);
-    actual = siguiente;
-  }
-  return { niveles, raiz: actual[0] };
-}
-
-// Para cada nivel: el hermano que hay que hashear, y el bit que dice de que lado
-// esta el nodo propio (0 = izquierda, 1 = derecha).
-function caminoDe(niveles, posicion) {
-  const camino = [];
-  const indices = [];
-  let pos = posicion;
-  for (let nivel = 0; nivel < niveles.length - 1; nivel++) {
-    const hermano = niveles[nivel][pos ^ 1];
-    camino.push(hermano);
-    indices.push(BigInt(pos & 1));
-    pos = pos >> 1;
-  }
-  return { camino, indices };
 }
 
 function aEntrada(o) {
@@ -147,10 +118,7 @@ async function main() {
   console.log(`  entradas publicas ${info.nPubInputs}`);
   console.log(`  salidas           ${info.nOutputs}`);
 
-  const poseidon = await buildPoseidon();
-  const F = poseidon.F;
-  const hash1 = (x) => F.toObject(poseidon([x]));
-  const hash2 = (a, b) => F.toObject(poseidon([a, b]));
+  const { hash1, hash2 } = await construirHashes();
 
   const hojas = secretos.map(hash1);
   const { niveles, raiz: raizArbol } = armarArbol(hojas, hash2);
