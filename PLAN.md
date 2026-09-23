@@ -121,7 +121,7 @@ Este archivo, `CONTEXTO.md`, `estado.json`, `RETOMAR.md`, `AGENTS.md`,
 ### T03 · El circuito de pertenencia
 
 - **Depende de**: T02. **Leer**: `CONTEXTO.md`, `docs/01-poseidon.md`.
-- **Hacer**: `circuits/pertenencia.circom`. Privados: `secreto`, `camino[3]`,
+- **Hacer**: `circuitos/pertenencia.circom`. Privados: `secreto`, `camino[3]`,
   `indices[3]`. Públicos: `raiz`, `scope`. Salida pública: `nulificador`.
   Adentro: hoja `= Poseidon(secreto)`; subir el árbol y **exigir** que la raíz
   calculada sea igual a la pública; `nulificador = Poseidon(secreto, scope)`.
@@ -132,6 +132,13 @@ Este archivo, `CONTEXTO.md`, `estado.json`, `RETOMAR.md`, `AGENTS.md`,
     por qué. Solo escribirlo a mano si no existe ninguno.
 - **Hecho cuando**: compila, y `docs/02-circuito.md` incluye el **número real de
   restricciones** que reporta el compilador.
+- **Heredado de T02**: el paso de control cubre `Poseidon` de aridad 1, pero el
+  nulificador usa aridad 2, y cada aridad tiene constantes distintas. Ampliá
+  `npm run control:poseidon` a aridad 2 antes de confiar en el nulificador.
+  T02 también dejó registrado que las dos implementaciones reducen módulo `p` en
+  silencio: dos secretos que difieran en un múltiplo de `p` colisionan. Acá solo
+  hay que tenerlo presente; la validación del rango va en el organizador y el
+  prover (T05 y T06), no adentro del circuito.
 - **Se aprende**: qué es una restricción y por qué un circuito no "ejecuta" sino
   que "verifica"; la diferencia entre señal privada, pública y salida; por qué la
   separación de dominio (Poseidon de 1 entrada para la hoja, de 2 para el
