@@ -17,7 +17,8 @@
     "probar": "node scripts/prover.mjs",
     "puerta:provisionar": "node scripts/provisionar-puerta.mjs",
     "validar": "node scripts/validador.mjs",
-    "ataque:raiz-propia": "node scripts/ataque-raiz-propia.mjs"
+    "ataque:raiz-propia": "node scripts/ataque-raiz-propia.mjs",
+    "test": "node scripts/demostraciones.mjs"
   },
   "dependencies": {
     "@zk-kit/binary-merkle-root.circom": "2.0.0",

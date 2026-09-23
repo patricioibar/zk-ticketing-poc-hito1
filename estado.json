@@ -12,7 +12,7 @@
     { "id": "T05", "titulo": "Organizador v0 (fuente JSON)",            "fase": 1, "depende": ["T04"],         "estado": "hecha",     "bitacora": "bitacora/T05-organizador.md" },
     { "id": "T06", "titulo": "Asistente / prover",                      "fase": 1, "depende": ["T05"],         "estado": "hecha",     "bitacora": "bitacora/T06-prover.md" },
     { "id": "T07", "titulo": "Validadores x2",                          "fase": 1, "depende": ["T06"],         "estado": "hecha",     "bitacora": "bitacora/T07-validador.md" },
-    { "id": "T08", "titulo": "Demostraciones y pruebas negativas",      "fase": 1, "depende": ["T07"],         "estado": "pendiente", "bitacora": null },
+    { "id": "T08", "titulo": "Demostraciones y pruebas negativas",      "fase": 1, "depende": ["T07"],         "estado": "hecha",     "bitacora": "bitacora/T08-demostraciones.md" },
     { "id": "T09", "titulo": "RegistroDeRaiz.sol + Hardhat",            "fase": 2, "depende": ["T08"],         "estado": "pendiente", "bitacora": null },
     { "id": "T10", "titulo": "Verificador Groth16 on-chain (opcional)", "fase": 2, "depende": ["T09"],         "estado": "opcional",  "bitacora": null },
     { "id": "T11", "titulo": "EntradaNFT.sol",                          "fase": 3, "depende": ["T09"],         "estado": "pendiente", "bitacora": null },
