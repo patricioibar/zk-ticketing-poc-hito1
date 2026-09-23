@@ -21,7 +21,7 @@
 import { ethers } from "ethers";
 
 import { P } from "../lib/campo.mjs";
-import { asegurarDespliegue, clientes, reiniciarCadena } from "../lib/cadena.mjs";
+import { asegurarDespliegue, clientes, motivoDeRevert, reiniciarCadena } from "../lib/cadena.mjs";
 import { fuenteContratoRaiz } from "../fuentes/contrato-raiz.mjs";
 
 // La cuenta #1 de la cadena local. Publica, como todas: ver lib/cadena.mjs.
@@ -32,18 +32,8 @@ const RAIZ_B = 12345678901234567890123456789012345678901234567890123456789012345
 
 const miles = (n) => n.toLocaleString("es-AR");
 
-// Por que hace falta esto: cuando el contrato revierte con un custom error, ethers
-// trae los bytes del error en `e.data` pero no los decodifica solo —`e.revert`
-// viene en null— porque el rechazo ocurrio estimando el gas y no en una llamada.
-// Los bytes son el selector del error y sus argumentos: con el ABI a mano se leen.
-function motivoDeRevert(e, abi) {
-  const datos = e?.data ?? e?.info?.error?.data;
-  if (typeof datos === "string" && datos.startsWith("0x")) {
-    const descripcion = new ethers.Interface(abi).parseError(datos);
-    if (descripcion) return `revirtio con ${descripcion.name}(${descripcion.args.join(", ")})`;
-  }
-  return e?.shortMessage ?? String(e?.message ?? e);
-}
+// Por que hace falta decodificar a mano el motivo de un revert esta explicado en
+// lib/cadena.mjs, donde vive `motivoDeRevert`: lo usan este script y el de T11.
 
 async function main() {
   const fallas = [];

@@ -15,7 +15,7 @@
     { "id": "T08", "titulo": "Demostraciones y pruebas negativas",      "fase": 1, "depende": ["T07"],         "estado": "hecha",     "bitacora": "bitacora/T08-demostraciones.md" },
     { "id": "T09", "titulo": "RegistroDeRaiz.sol + Hardhat",            "fase": 2, "depende": ["T08"],         "estado": "hecha",     "bitacora": "bitacora/T09-contrato-raiz.md" },
     { "id": "T10", "titulo": "Verificador Groth16 on-chain (opcional)", "fase": 2, "depende": ["T09"],         "estado": "opcional",  "bitacora": null },
-    { "id": "T11", "titulo": "EntradaNFT.sol",                          "fase": 3, "depende": ["T09"],         "estado": "pendiente", "bitacora": null },
+    { "id": "T11", "titulo": "EntradaNFT.sol",                          "fase": 3, "depende": ["T09"],         "estado": "hecha",     "bitacora": "bitacora/T11-entrada-nft.md" },
     { "id": "T12", "titulo": "Flujo completo con compradores",          "fase": 3, "depende": ["T11"],         "estado": "pendiente", "bitacora": null },
     { "id": "T13", "titulo": "Cierre de la escalera",                   "fase": 3, "depende": ["T12"],         "estado": "pendiente", "bitacora": null },
     { "id": "T14", "titulo": "RECORRIDO.md",                            "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },

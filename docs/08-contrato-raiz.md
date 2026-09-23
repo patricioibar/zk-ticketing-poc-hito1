@@ -499,8 +499,15 @@ de cuántas transacciones mandó antes, y acá siempre es la cuenta #0 con nonce
 Raices publicadas en esta cadena  (1)
 
   scope                 gas      bloque  raiz
-  1234                   69917       2  217428069206837197869151...
+  74219528497784697916   70277       2  217428069206837197869151...
 ```
+
+El scope es el de `evento-A` derivado a elemento de campo: hasta T11 el organizador
+usaba `1234` por defecto y ahí decía `1234  69917`. El gas subió 360 por ese cambio y
+por nada más: `1234` ocupa 30 bytes en cero de los 32 que se mandan, y este número no
+tiene ninguno, a 16 − 4 = 12 de gas por byte. La tabla de la sección 3 sigue siendo la
+de `npm run contrato:medir`, que publica sobre el scope `1234` y da 69.917. Por qué
+cambió el default está en `docs/09-entrada-nft.md`, sección 2.
 
 El prover y el provisionador imprimen ahora `fuente de raiz  contrato (...)` donde
 antes decía `json (datos/raiz.json)`, y hacen exactamente lo mismo. El validador no
@@ -555,12 +562,15 @@ Prover / asistente - una prueba de pertenencia
 
   padron publico    datos/arbol.json (8 compromisos, profundidad 3)
   fuente de raiz    contrato (RegistroDeRaiz 0x5FbDB2315678afecb367f032d93F642f64180aa3 en http://127.0.0.1:8545)
-  evento (scope)    1234
+  evento (scope)    7421952849778469791634643529725528999721210991605956451547960136850882987634
   identidad         3
 
-La fuente no tiene ninguna raiz publicada para el scope 1234.
-Corre primero:  npm run organizador -- --scope 1234
+La fuente no tiene ninguna raiz publicada para el scope 7421952849778469791634643529725528999721210991605956451547960136850882987634.
+Corre primero:  npm run organizador -- --scope 7421952849778469791634643529725528999721210991605956451547960136850882987634
 ```
+
+(El scope es el de `evento-A`: el prover lo toma de `datos/arbol.json` cuando no se le
+pasa ninguno.)
 
 Vale la pena mirar bien lo que pasó. El comando **sí** levantó una cadena y **sí**
 desplegó el contrato —por eso imprime la dirección, y es la misma de siempre— pero es

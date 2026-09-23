@@ -3,9 +3,9 @@
 // publica la raiz a traves de una fuenteDeRaiz y guarda los secretos aparte.
 // Determinista con semilla fija. Ver docs/04-organizador.md.
 //
-// Uso: npm run organizador
-//      npm run organizador -- --scope 1235 --semilla otra
-//      npm run organizador -- --scope evento-A  (etiqueta: se deriva a elemento de campo)
+// Uso: npm run organizador                     (scope evento-A: el que esta en datos/)
+//      npm run organizador -- --scope evento-B --semilla otra
+//      npm run organizador -- --scope 1235     (solo digitos: se usa tal cual)
 //      npm run organizador -- --romper rango     (rotura deliberada)
 
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -25,13 +25,13 @@ const datos = join(raizRepo, "datos");
 const PROFUNDIDAD = 3;
 const HOJAS = 2 ** PROFUNDIDAD;
 
-const SCOPE_POR_DEFECTO = 1234n; // el mismo que usan T03 y T04
+const SCOPE_POR_DEFECTO = "evento-A"; // el evento que esta commiteado en datos/
 const SEMILLA_POR_DEFECTO = "tpf211-hito1-parte-base";
 
 function leerArgumentos(argv) {
   const opciones = {
-    scope: SCOPE_POR_DEFECTO,
-    etiquetaScope: null,
+    scope: elementoDeScope(SCOPE_POR_DEFECTO),
+    etiquetaScope: SCOPE_POR_DEFECTO,
     semilla: SEMILLA_POR_DEFECTO,
     romper: null,
   };

@@ -28,9 +28,14 @@ profundidad produce caminos que el circuito no puede recorrer. Cambiar una de la
 dos cosas sin la otra da el peor error posible: uno que aparece recién cuando la
 prueba no verifica, sin decir por qué.
 
-`scripts/organizador.mjs:27` fija el scope por defecto en 1234, el mismo que usan
-el banco de pruebas de T03 y la ceremonia de T04, para que los tres hablen del
-mismo evento.
+`scripts/organizador.mjs:28` fija el scope por defecto en `evento-A`, que es el
+evento commiteado en `datos/` y el que deja publicado `npm test`. Hasta T11 el
+default era `1234` —el mismo número que usan el banco de pruebas de T03 y la
+ceremonia de T04—, pero esos dos no escriben en `datos/`: lo único que conseguía esa
+coincidencia era que `npm run organizador` sin argumentos pisara el juego de datos
+del repositorio con otro evento. El arreglo está contado en
+`docs/09-entrada-nft.md`, sección 2. Las salidas de la sección 5 de este documento
+son anteriores a ese cambio y muestran `1234`.
 
 ### De dónde salen los compromisos
 
