@@ -5,13 +5,14 @@
 //
 // Uso: npm run organizador
 //      npm run organizador -- --scope 1235 --semilla otra
+//      npm run organizador -- --scope evento-A  (etiqueta: se deriva a elemento de campo)
 //      npm run organizador -- --romper rango     (rotura deliberada)
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join, relative } from "node:path";
 
-import { P, exigirEnCampo, secretoDeterminista } from "../lib/campo.mjs";
+import { P, exigirEnCampo, secretoDeterminista, elementoDeScope } from "../lib/campo.mjs";
 import { construirHashes, armarArbol, caminoDe, raizDesdeCamino } from "../lib/merkle.mjs";
 import { fuenteJson } from "../fuentes/json.mjs";
 
@@ -30,13 +31,18 @@ const SEMILLA_POR_DEFECTO = "tpf211-hito1-parte-base";
 function leerArgumentos(argv) {
   const opciones = {
     scope: SCOPE_POR_DEFECTO,
+    etiquetaScope: null,
     semilla: SEMILLA_POR_DEFECTO,
     romper: null,
   };
   for (let i = 0; i < argv.length; i++) {
     const valor = argv[i + 1];
     if (argv[i] === "--scope") {
-      opciones.scope = BigInt(valor);
+      // Un numero se usa tal cual; una etiqueta ("evento-A") se deriva con la
+      // misma funcion que usa el prover. Los dos tienen que coincidir o el
+      // nulificador de un lado no es el del otro. Ver lib/campo.mjs.
+      opciones.scope = elementoDeScope(valor);
+      if (String(opciones.scope) !== String(valor)) opciones.etiquetaScope = valor;
       i++;
     } else if (argv[i] === "--semilla") {
       opciones.semilla = valor;
@@ -85,7 +91,9 @@ async function main() {
 
   const fuente = fuenteJson({ ruta: join(datos, "raiz.json"), etiqueta: "datos/raiz.json" });
   console.log(`  fuente de raiz    ${fuente.nombre}`);
-  console.log(`  scope del evento  ${opciones.scope}`);
+  console.log(
+    `  scope del evento  ${opciones.scope}${opciones.etiquetaScope ? `  (etiqueta ${opciones.etiquetaScope})` : ""}`
+  );
   console.log(`  semilla           ${opciones.semilla}`);
   console.log(`  profundidad       ${PROFUNDIDAD} (${HOJAS} identidades)`);
 

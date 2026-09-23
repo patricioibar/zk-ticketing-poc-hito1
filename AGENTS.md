@@ -56,6 +56,11 @@ Se van completando tarea por tarea. Los que ya existen:
   `docs/04-organizador.md`). Escribe `datos/`, es determinista con semilla fija, y
   la raíz sale por la interfaz `fuenteDeRaiz`, que es la pieza que T09 y T12
   reemplazan sin tocar el resto.
+- Generar una prueba y medir tiempo y tamaño:
+  `npm run probar -- --identidad 3 --scope evento-A` (ver `docs/05-prover.md`).
+  Escribe `salidas/`, que no se commitea. Los tiempos que imprime son una **cota
+  de referencia en hardware de escritorio**: no son MED-001, que pregunta por
+  teléfonos de gama media.
 
 ## Reglas específicas
 

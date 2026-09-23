@@ -10,7 +10,7 @@
     { "id": "T03", "titulo": "Circuito de pertenencia",                 "fase": 1, "depende": ["T02"],         "estado": "hecha",     "bitacora": "bitacora/T03-circuito.md" },
     { "id": "T04", "titulo": "Trusted setup Groth16",                   "fase": 1, "depende": ["T03"],         "estado": "hecha",     "bitacora": "bitacora/T04-setup.md" },
     { "id": "T05", "titulo": "Organizador v0 (fuente JSON)",            "fase": 1, "depende": ["T04"],         "estado": "hecha",     "bitacora": "bitacora/T05-organizador.md" },
-    { "id": "T06", "titulo": "Asistente / prover",                      "fase": 1, "depende": ["T05"],         "estado": "pendiente", "bitacora": null },
+    { "id": "T06", "titulo": "Asistente / prover",                      "fase": 1, "depende": ["T05"],         "estado": "hecha",     "bitacora": "bitacora/T06-prover.md" },
     { "id": "T07", "titulo": "Validadores x2",                          "fase": 1, "depende": ["T06"],         "estado": "pendiente", "bitacora": null },
     { "id": "T08", "titulo": "Demostraciones y pruebas negativas",      "fase": 1, "depende": ["T07"],         "estado": "pendiente", "bitacora": null },
     { "id": "T09", "titulo": "RegistroDeRaiz.sol + Hardhat",            "fase": 2, "depende": ["T08"],         "estado": "pendiente", "bitacora": null },
