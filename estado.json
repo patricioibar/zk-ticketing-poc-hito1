@@ -18,7 +18,7 @@
     { "id": "T11", "titulo": "EntradaNFT.sol",                          "fase": 3, "depende": ["T09"],         "estado": "pendiente", "bitacora": null },
     { "id": "T12", "titulo": "Flujo completo con compradores",          "fase": 3, "depende": ["T11"],         "estado": "pendiente", "bitacora": null },
     { "id": "T13", "titulo": "Cierre de la escalera",                   "fase": 3, "depende": ["T12"],         "estado": "pendiente", "bitacora": null },
-    { "id": "T14", "titulo": "RECORRIDO.md",                            "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },
+    { "id": "T14", "titulo": "RECORRIDO.md (fase 1 lista; se extiende tras T13)", "fase": 4, "depende": ["T13"], "estado": "en-curso",  "bitacora": "bitacora/T14-recorrido.md" },
     { "id": "T15", "titulo": "INTERCAMBIABLES.md",                      "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },
     { "id": "T16", "titulo": "EXPERIMENTOS.md",                         "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },
     { "id": "T17", "titulo": "Evidencia al repo de docs",               "fase": 5, "depende": ["T15"],         "estado": "pendiente", "bitacora": null }
