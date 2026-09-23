@@ -1,0 +1,24 @@
+{
+  "name": "zk-ticketing-poc-hito1",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PoC mini Hito 1 — Variacion 2: pertenencia anonima con nulificador sobre entradas NFT",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "estado": "node scripts/estado.mjs",
+    "verificar:entorno": "node scripts/verificar-entorno.mjs"
+  },
+  "dependencies": {
+    "circomlib": "2.0.5",
+    "circomlibjs": "0.1.7",
+    "ethers": "6.17.0",
+    "snarkjs": "0.7.6"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "5.6.1",
+    "hardhat": "2.29.1"
+  }
+}

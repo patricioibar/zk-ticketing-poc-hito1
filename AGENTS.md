@@ -40,9 +40,11 @@ ADR-010, ADR-011 y a la medición MED-001. **No cierra ninguna decisión.**
 
 ## Comandos
 
-Se completan en T01. Los estables:
+Se van completando tarea por tarea. Los que ya existen:
 
-- Estado del plan: `npm run estado` (antes de T01: `node scripts/estado.mjs`)
+- Estado del plan: `npm run estado`
+- Versiones de todas las herramientas: `npm run verificar:entorno` (ver
+  `docs/00-entorno.md`)
 
 ## Reglas específicas
 
@@ -65,6 +67,12 @@ su `bitacora/TNN-<slug>.md`. Una tarea sin doc no está hecha.
 
 ## Git
 
-Nunca se trabaja directo sobre `main`: rama y commit. Los commits asistidos llevan
-el trailer `Asistido-por: <herramienta>`. El agente no hace push ni maneja
-credenciales: eso lo hace Patricio.
+Un commit por tarea, con el código, su doc y su bitácora juntos: son los puntos de
+retorno si algo se rompe. Mensaje `TNN: <qué hiciste>` y trailer
+`Asistido-por: <herramienta>`.
+
+Mientras el repo no tenga remoto en GitHub, los commits van a `main`: sin remoto
+no hay PR posible. Cuando Patricio cree el repositorio en la organización, se pasa
+al flujo del TPF —rama por tarea y PR revisado— y esta nota se borra.
+
+El agente no hace push ni maneja credenciales: eso lo hace Patricio.
