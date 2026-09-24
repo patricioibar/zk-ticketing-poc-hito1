@@ -17,6 +17,7 @@
     "contrato:compilar": "hardhat compile",
     "contrato:medir": "node scripts/contrato.mjs",
     "contrato:nft": "node scripts/contrato-nft.mjs",
+    "flujo": "node scripts/flujo-completo.mjs",
     "cadena:arriba": "node scripts/cadena.mjs --arriba",
     "cadena:abajo": "node scripts/cadena.mjs --abajo",
     "cadena:estado": "node scripts/cadena.mjs --estado",

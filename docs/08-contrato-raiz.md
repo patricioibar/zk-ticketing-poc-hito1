@@ -97,8 +97,8 @@ para el que fue escrita.
 
 `fuentes/seleccion.mjs` es un archivo nuevo, y que haya hecho falta crearlo es un
 hallazgo de esta tarea, no una decisión de diseño: está contado en la sección 3.
-`fuentes/seleccion.mjs:28` lee la variable de entorno `FUENTE` —`contrato` por
-defecto, `json` para volver a la fase 1— y devuelve la implementación que
+`fuentes/seleccion.mjs:32` lee la variable de entorno `FUENTE` —`contrato` por
+defecto, `json` para volver a la fase 1, `contrato-nft` desde T12— y devuelve la implementación que
 corresponda. El organizador, el prover y el provisionador de puertas piden
 `fuenteDeRaiz()` y no saben cuál les tocó.
 
@@ -445,8 +445,8 @@ verificador Groth16 on-chain— termina necesitando tests de contrato en serio.
 sigue. El contrato de entradas va a **originar** los compromisos —`leerCompromisos`
 va a dejar de devolver `null`— y el organizador va a armar el árbol con los que
 enviaron los compradores en vez de inventarlos. Ahora que existe
-`fuentes/seleccion.mjs`, toca un archivo nuevo en `fuentes/` y una línea en
-`fuentes/seleccion.mjs:33`. Nada más.
+`fuentes/seleccion.mjs`, toca un archivo nuevo en `fuentes/` y una rama nueva en
+`fuentes/seleccion.mjs:40`. Nada más. (Hecho: `docs/10-flujo-completo.md`.)
 
 ## 5. Probalo vos
 

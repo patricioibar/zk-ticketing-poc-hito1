@@ -13,14 +13,18 @@
 //
 //   contrato  (por defecto)  la raiz vive en RegistroDeRaiz, en la cadena local
 //   json                     la raiz vive en datos/raiz.json, como en la fase 1
+//   contrato-nft             la raiz vive en EntradaNFT y los compromisos tambien:
+//                            los mandaron los compradores, no el organizador (T12)
 //
 //   FUENTE=json npm run organizador
+//   FUENTE=contrato-nft npm test
 
 import { join } from "node:path";
 
 import { RAIZ_REPO } from "../lib/puerta.mjs";
 import { fuenteJson } from "./json.mjs";
 import { fuenteContratoRaiz } from "./contrato-raiz.mjs";
+import { fuenteContratoNft } from "./contrato-nft.mjs";
 
 export const FUENTE_POR_DEFECTO = "contrato";
 
@@ -33,9 +37,12 @@ export async function fuenteDeRaiz({ silencioso = false } = {}) {
   if (elegida === "contrato") {
     return fuenteContratoRaiz({ silencioso });
   }
+  if (elegida === "contrato-nft") {
+    return fuenteContratoNft({ silencioso });
+  }
 
   throw new Error(
-    `FUENTE="${elegida}" no es ninguna fuente conocida. Las que hay son "contrato" y "json". ` +
+    `FUENTE="${elegida}" no es ninguna fuente conocida. Las que hay son "contrato", "contrato-nft" y "json". ` +
       "Ver fuentes/seleccion.mjs."
   );
 }

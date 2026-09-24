@@ -35,8 +35,8 @@ contract EntradaNFT is ERC721, RegistroDeRaiz {
         bool enviado;
     }
 
-    /// @dev Arranca en 0 para que el tokenId coincida con la posicion de la hoja en el
-    ///      arbol, que tambien se numera desde 0. Como se arma ese arbol es T12.
+    /// @dev Arranca en 0, igual que las hojas del arbol. Ojo: T12 mostro que tokenId y
+    ///      posicion de la hoja NO coinciden, porque manda el orden en que llegan.
     uint256 private _proximoToken;
 
     mapping(uint256 tokenId => Compromiso) private _compromisos;

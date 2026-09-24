@@ -235,9 +235,15 @@ ZK. Con la implementación de referencia puesta, todo lo que es nuestro son unas
 líneas: la función `emitir`, la función `enviarCompromiso` y su almacenamiento. Es
 mucho más fácil revisarlas sabiendo que el resto es código que auditó mucha gente.
 
-El precio está medido: desplegar `EntradaNFT` cuesta **2.341.162 de gas**, contra
+El precio está medido: desplegar `EntradaNFT` cuesta **2.341.174 de gas**, contra
 429.921 del `RegistroDeRaiz` pelado de la V1. La mayor parte de esa diferencia es el
 estándar completo, no nuestras treinta líneas. Se paga una sola vez.
+
+(T11 midió 2.341.162 con un comentario distinto en `contratos/EntradaNFT.sol:38`, que
+T12 corrigió. Los doce de diferencia no son un error de medición y están comprobados:
+los dos bytecodes miden lo mismo y son idénticos salvo los últimos 43 bytes, que son
+el hash de metadatos que `solc` agrega al final y que cubre también los comentarios.
+Entre las dos versiones cambia **un** byte de cero a distinto de cero, y 16 − 4 = 12.)
 
 ### Por qué heredar `RegistroDeRaiz` y no copiar sus dos funciones
 
@@ -282,7 +288,7 @@ produce es `npm run contrato:nft`.
 
 | Operación | Gas | Quién paga |
 |---|---|---|
-| Desplegar `EntradaNFT` (una sola vez) | 2.341.162 | el organizador |
+| Desplegar `EntradaNFT` (una sola vez) | 2.341.174 | el organizador |
 | Emitir la primera entrada | 95.719 | el organizador |
 | Emitir las siguientes | 78.607 | el organizador |
 | **Enviar un compromiso** | **71.515** | **el comprador** |

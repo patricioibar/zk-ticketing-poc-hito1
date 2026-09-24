@@ -26,11 +26,11 @@
 import { exigirEnCampo } from "../lib/campo.mjs";
 import { RPC, anotarPublicacion, conectar } from "../lib/cadena.mjs";
 
-export async function fuenteContratoRaiz({ silencioso = false } = {}) {
-  // La conexion se arma una vez, al construir la fuente: levanta la cadena si
-  // hace falta, compila si hace falta y despliega si hace falta. De ahi en mas
-  // los metodos son llamadas al contrato y nada mas.
-  const { contrato, direccion } = await conectar({ silencioso });
+export async function fuenteContratoRaiz({ silencioso = false, yaConectado = null } = {}) {
+  // La conexion se arma una vez, al construir la fuente: levanta la cadena si hace
+  // falta, compila si hace falta y despliega si hace falta. `yaConectado` es para
+  // quien ya tiene un contrato que hereda RegistroDeRaiz: T12 reusa estos metodos.
+  const { contrato, direccion } = yaConectado ?? (await conectar({ silencioso }));
 
   return {
     nombre: `contrato (RegistroDeRaiz ${direccion} en ${RPC})`,
