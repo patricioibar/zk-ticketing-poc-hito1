@@ -19,7 +19,7 @@
     { "id": "T12", "titulo": "Flujo completo con compradores",          "fase": 3, "depende": ["T11"],         "estado": "hecha",     "bitacora": "bitacora/T12-flujo-completo.md" },
     { "id": "T13", "titulo": "Cierre de la escalera",                   "fase": 3, "depende": ["T12"],         "estado": "hecha",     "bitacora": "bitacora/T13-cierre.md" },
     { "id": "T14", "titulo": "RECORRIDO.md",                            "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },
-    { "id": "T15", "titulo": "INTERCAMBIABLES.md",                      "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },
+    { "id": "T15", "titulo": "INTERCAMBIABLES.md",                      "fase": 4, "depende": ["T13"],         "estado": "hecha",     "bitacora": "bitacora/T15-intercambiables.md" },
     { "id": "T16", "titulo": "EXPERIMENTOS.md",                         "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },
     { "id": "T17", "titulo": "Evidencia al repo de docs",               "fase": 5, "depende": ["T15"],         "estado": "pendiente", "bitacora": null }
   ]
