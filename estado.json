@@ -1,7 +1,7 @@
 {
   "proyecto": "PoC mini Hito 1 — Variación 2 (NFT + capa de compromisos)",
   "plan": "PLAN.md",
-  "actualizado": "2026-09-23",
+  "actualizado": "2026-09-24",
   "stack": "circom + snarkjs (Groth16) + Hardhat 3 + OpenZeppelin ERC-721 + ethers",
   "tareas": [
     { "id": "T00", "titulo": "Estructura, plan y estado",              "fase": 0, "depende": [],              "estado": "hecha",     "bitacora": "bitacora/T00-andamiaje.md" },
@@ -17,7 +17,7 @@
     { "id": "T10", "titulo": "Verificador Groth16 on-chain (opcional)", "fase": 2, "depende": ["T09"],         "estado": "opcional",  "bitacora": null },
     { "id": "T11", "titulo": "EntradaNFT.sol",                          "fase": 3, "depende": ["T09"],         "estado": "hecha",     "bitacora": "bitacora/T11-entrada-nft.md" },
     { "id": "T12", "titulo": "Flujo completo con compradores",          "fase": 3, "depende": ["T11"],         "estado": "hecha",     "bitacora": "bitacora/T12-flujo-completo.md" },
-    { "id": "T13", "titulo": "Cierre de la escalera",                   "fase": 3, "depende": ["T12"],         "estado": "pendiente", "bitacora": null },
+    { "id": "T13", "titulo": "Cierre de la escalera",                   "fase": 3, "depende": ["T12"],         "estado": "hecha",     "bitacora": "bitacora/T13-cierre.md" },
     { "id": "T14", "titulo": "RECORRIDO.md",                            "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },
     { "id": "T15", "titulo": "INTERCAMBIABLES.md",                      "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },
     { "id": "T16", "titulo": "EXPERIMENTOS.md",                         "fase": 4, "depende": ["T13"],         "estado": "pendiente", "bitacora": null },

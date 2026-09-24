@@ -301,6 +301,15 @@ async function main() {
     console.log("\n  El organizador no conoce ningun secreto. Los ocho los generaron sus duenios");
     console.log("  y lo unico que salio de cada maquina fue Poseidon(secreto).");
   }
+
+  // El padron que queda en datos/ es el de la cadena; el que esta commiteado es el
+  // de la parte base. Son dos juegos de datos distintos y ninguno es el "bueno":
+  // decidir cual vive en el repositorio es una decision de diseno que T13 no toma.
+  // Lo que si puede hacer es que el comando lo diga, en vez de dejar el arbol de
+  // trabajo sucio sin explicacion. Ver docs/11-cierre-de-la-escalera.md, seccion 6.
+  console.log("\n  datos/ quedo regenerado desde la cadena, asi que git status lo va a mostrar");
+  console.log("  modificado. Para volver al juego de datos de la parte base:");
+  console.log("    git checkout -- datos/");
   console.log(`\n  La cadena queda levantada. Para bajarla:  npm run cadena:abajo\n`);
   process.exit(0);
 }
