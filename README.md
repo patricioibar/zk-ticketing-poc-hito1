@@ -17,8 +17,11 @@ El código es el vehículo; el entregable es entender. Cada componente tiene su 
 en `docs/` que explica qué hace, cómo, **por qué está hecho así**, qué piezas
 podrías reemplazar y qué pagarías por cada cambio.
 
-Si es tu primera vez acá, el orden de lectura es [RECORRIDO.md](RECORRIDO.md)
-(existe a partir de T14). Mientras tanto, [PLAN.md](PLAN.md).
+Si es tu primera vez acá, empezá por [RECORRIDO.md](RECORRIDO.md): es un tour
+guiado, en orden de lectura y pensado para hacerlo con la terminal al lado, que
+arranca haciendo correr el sistema entero antes de explicar nada. Hoy cubre la
+**fase 1** —entorno, Poseidon, circuito, trusted setup, organizador, prover,
+validadores y demostraciones— y se extiende cuando estén las fases 2 y 3.
 
 ## Empezar
 
@@ -33,6 +36,7 @@ mismo comando es `npm run estado`.
 
 | Archivo | Para qué |
 |---|---|
+| [RECORRIDO.md](RECORRIDO.md) | el tour guiado: por dónde empezar y en qué orden |
 | [PLAN.md](PLAN.md) | el plan completo, tarea por tarea |
 | [CONTEXTO.md](CONTEXTO.md) | las reglas que sigue cualquier agente acá |
 | [RETOMAR.md](RETOMAR.md) | cómo seguir en una conversación nueva |
